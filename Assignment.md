@@ -18,9 +18,9 @@ Enemies should collide with the bullets. This should cause both the enemy that w
 ## BONUS!
 
 Here are some suggestions of little improvements to this version. None of these are required for this assignment, but you can complete these for 0.5 bonus points each.
-- Update the wrapping code for the player to make the transition smoother. (Hint, let the player move futher out of bounds before moving them)
-- Deactivate the bullets when they exit the screen.
-- Make the bullets start at the end of the cannon barrel when they are activated.
+- Update the wrapping code for the player to make the transition smoother. (Hint, let the player move futher out of bounds before moving them) COMPLETED!
+- Deactivate the bullets when they exit the screen. COMPLETED!
+- Make the bullets start at the end of the cannon barrel when they are activated. 
 
 ## Submission
 
