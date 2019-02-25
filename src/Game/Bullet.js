@@ -35,6 +35,18 @@ class Bullet {
       if (this.activeTime < 0) {
         this.deactivate();
       }
+      if (this.x > 800){
+        this.deactivate();
+      }
+      else if (this.x < 0){
+        this.deactivate();
+      }
+      if (this.y < 0){
+        this.deactivate();
+      }
+      else if(this.y > 600){
+        this.deactivate();
+      }
     }
   }
 
