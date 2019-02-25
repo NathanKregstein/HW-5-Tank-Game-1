@@ -64,20 +64,20 @@ function update(totalTime, deltaTime) {
   p1.update(deltaTime, keys);
 
   // Keep player on screen
-  if (p1.x > phaserConfig.width + 5) {
+  if (p1.x > phaserConfig.width + 15) {
     p1.setX(0);
   }
 
   if (p1.x < -5) {
-    p1.setX(phaserConfig.width - 5);
+    p1.setX(phaserConfig.width - 15);
   }
 
-  if (p1.y > phaserConfig.height + 5) {
+  if (p1.y > phaserConfig.height + 15) {
     p1.setY(0);
   }
 
   if (p1.y < -5) {
-    p1.setY(phaserConfig.height - 5);
+    p1.setY(phaserConfig.height - 15);
   }
 
   // Fire bullet once when space key is pressed
