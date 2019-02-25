@@ -2,6 +2,7 @@
 const Phaser = require('phaser');
 const Player = require('./Player');
 const Bullet = require('./Bullet');
+ const Enemy = require('./Enemy');
 
 const phaserConfig = {
   type: Phaser.AUTO,
@@ -9,6 +10,7 @@ const phaserConfig = {
   height: 600
 };
 
+let enemySpawnCounter =5000;
 let graphics;
 let keys;
 
@@ -18,7 +20,11 @@ const bullets = [];
 for (let i = 0; i < 20; i ++) {
   bullets.push(new Bullet());
 }
-
+//create enemies
+const enemies =[];
+for (let i = 0; i < 20; i ++) {
+  enemies.push(new Enemy());
+}
 // Code for only firing bullet on space up
 let isLastSpaceDown = false;
 
@@ -38,7 +44,15 @@ function isCircleCollision(c1, c2) {
 }
 
 function create() {
-  keys = this.input.keyboard.createCursorKeys();
+  keys = {
+    left: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT),
+    right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT),
+    up: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP),
+    down: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN),
+    space: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE),
+    a: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
+    d: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
+    }
   graphics = this.add.graphics({
     fillStyle: { color: 0xeeeeee },
     lineStyle: { width: 3, color: 0xeeeeee }
@@ -69,17 +83,40 @@ function update(totalTime, deltaTime) {
   // Fire bullet once when space key is pressed
   if (keys.space.isDown && !isLastSpaceDown) {
     const newBullet = bullets.find(b => !b.isActive);
-    if (newBullet) newBullet.activate(p1.x, p1.y, p1.forwardRot);
+    if (newBullet) newBullet.activate(p1.x, p1.y, p1.cannonRot);
   }
   isLastSpaceDown = keys.space.isDown;
 
   // Update bullets
   bullets.forEach(b => b.update(deltaTime));
 
+  // spawn enemy
+   if(enemySpawnCounter <=0){
+    const newEnemy = enemies.find(e => !e.isActive);
+    if(newEnemy) newEnemy.activate(Math.random() * (phaserConfig.width-100), Math.random() * (phaserConfig.height-100));
+    enemySpawnCounter = 5000;
+  }
+  enemySpawnCounter -= deltaTime;
   // Draw everything
   graphics.clear();
   p1.draw(graphics);
   bullets.forEach(b => b.draw(graphics));
+  enemies.forEach(e => e.draw(graphics));
+
+  bullets.forEach((bullet) => {
+    if(bullet.isActive){
+      enemies.forEach((enemy)=> {
+        if(enemy.isActive){
+          if(isCircleCollision(bullet,enemy)){
+            bullet.deactivate();
+            enemy.deactivate();
+          }
+        }
+      });
+    }
+
+  });
+  
 }
 
 phaserConfig.scene = {
